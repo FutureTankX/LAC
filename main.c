@@ -22,12 +22,14 @@
 #include <xc.h>
 #include "LED.h"
 #include "ADC.h"
+#include "PWM.h"
 
 #define ADC_CHANNEL 0
 
 
 
 uint16_t ADC;
+uint16_t dutyValue =0;
 
 
 void Clock_Init(void);
@@ -37,15 +39,21 @@ void main(void) {
     Clock_Init();
     ADC_Init(ADC_CHANNEL);
     LED_Init();
+    PWM_Init();
     ADC = ADC_Read();
     while (1) {
+        PWM_LoadDutyValue(dutyValue);
+        dutyValue++;
+        __delay_ms(100);
+        /*
         ADC = ADC_Read();
         if (ADC > 127) {
         LED = 1;
         __delay_ms(500);
         LED = 0;
         __delay_ms(500);
-        }
+         
+        }*/
     }
 }
 
@@ -53,8 +61,8 @@ void main(void) {
 
 void Clock_Init() {
 
-    OSCCONbits.IRCF = 0b111; // 16 Mhz
-    while (!OSCCONbits.HFIOFR || !OSCCONbits.HFIOFS);
+    OSCCONbits.IRCF = 0b111;                            //16Mhz
+    while (!OSCCONbits.HFIOFR || !OSCCONbits.HFIOFS);   //Wait for stable clock 
 }
 
 

@@ -12,6 +12,8 @@
 #include <stdint.h>
 
 
+void PWM_Init(void);
+void PWM_LoadDutyValue(uint16_t dutyValue);
 
 #endif	/* PWM_H */
 

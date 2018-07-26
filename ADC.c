@@ -26,7 +26,6 @@ void ADC_Init (uint8_t Channel) {
 }
 
 uint8_t ADC_Read() {
-    
         uint8_t __adcVal;
         ADCONbits.GO_nDONE = 1;       //Enable
         while (ADCONbits.GO_nDONE);   //Wait for ADC to complete
