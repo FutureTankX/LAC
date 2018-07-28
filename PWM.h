@@ -11,9 +11,11 @@
 #include <xc.h>
 #include <stdint.h>
 
+extern uint16_t DutyValue;
 
 void PWM_Init(void);
-void PWM_LoadDutyValue(uint16_t dutyValue);
-
+void PWM_DutyLoad(uint16_t __DutyValue);
+void PWM_DutyInc(void);
+void PWM_DutyDec(void);
 #endif	/* PWM_H */
 

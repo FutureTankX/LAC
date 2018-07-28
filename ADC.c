@@ -32,3 +32,13 @@ uint8_t ADC_Read() {
         __adcVal = ADRES;
         return __adcVal;
 }
+
+uint8_t ADC_Average(uint8_t Average_Rounds) {
+    uint16_t __adcAvr;
+    __adcAvr = ADC_Read();
+    for (uint8_t i=0;i<Average_Rounds;i++) {
+        __adcAvr += ADC_Read();
+        __adcAvr /= 2;
+    }
+    return __adcAvr;
+}

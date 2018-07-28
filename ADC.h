@@ -14,5 +14,6 @@
 
 void ADC_Init (uint8_t Channel);
 uint8_t ADC_Read(void);
+uint8_t ADC_Average(uint8_t Average_Rounds);
 #endif	/* ADC_H */
 

@@ -25,14 +25,19 @@
 #include "PWM.h"
 
 #define ADC_CHANNEL 0
+#define BATTERY_MAINTAIN_VOLTAGE 172
+#define NUMBER_OF_AVERAGES 3
 
 
 
-uint16_t ADC;
-uint16_t dutyValue =0;
+uint8_t ADC;
+uint16_t DutyValue = 0;
 
 
 void Clock_Init(void);
+void Battery_Voltage_Mintain(uint8_t __Voltage);
+void PWM_DutyInc(void);
+void PWM_DutyDec(void);
 
 void main(void) {
     
@@ -40,29 +45,21 @@ void main(void) {
     ADC_Init(ADC_CHANNEL);
     LED_Init();
     PWM_Init();
-    ADC = ADC_Read();
+    PWM_DutyLoad(DutyValue);
     while (1) {
-        PWM_LoadDutyValue(dutyValue);
-        dutyValue++;
-        __delay_ms(100);
-        /*
-        ADC = ADC_Read();
-        if (ADC > 127) {
-        LED = 1;
-        __delay_ms(500);
-        LED = 0;
-        __delay_ms(500);
-         
-        }*/
+        Battery_Voltage_Mintain(BATTERY_MAINTAIN_VOLTAGE);
+        //__delay_ms(500);
     }
 }
 
-
-
 void Clock_Init() {
-
     OSCCONbits.IRCF = 0b111;                            //16Mhz
     while (!OSCCONbits.HFIOFR || !OSCCONbits.HFIOFS);   //Wait for stable clock 
 }
 
+void Battery_Voltage_Mintain(uint8_t __Voltage) {
+    ADC = ADC_Average(NUMBER_OF_AVERAGES);
+    if (ADC > __Voltage) PWM_DutyInc();
+    if (ADC < __Voltage) PWM_DutyDec();
+}
 
